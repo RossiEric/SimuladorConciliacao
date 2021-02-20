@@ -18,7 +18,7 @@
 			display: none;
 		}
 
-		#vendaConcilia .card-img-top{
+		.card-img-top{
 			max-height: 50px;
 		}
 
@@ -30,6 +30,11 @@
 		#vendaConcilia .tituloV{
 			float: right;
 		}
+
+		.btn{
+			text-transform: uppercase;
+		}
+
 	</style>
 
   </head>
@@ -39,17 +44,31 @@
 		<div class="row">
 			<div class="col-md-12">
 				
+				<p>
+					&emsp;
+				</p>
+
 				<div id="ContainerInicio" class="row">
-					<div class="col-md-4 offset-4">
+					<div class="col-md-4 offset-md-4 col-12">
 						<div id="" class="card">
 							<h5 class="card-header">
 								<img class="card-img-top" src="images/produtos/iconfinder_Food_C207_2427857.png" alt="Card image cap">
 								<div class="tituloV"></div>
 							</h5>
-							<div class="card-body">
+							<div class="card-body" style="padding: 15px;">
 								<p class="card-text">
 									
+									<p>
+										O <b>Evencard</b> é uma plataforma especializada na auditoria de vendas. A solução captura os dados do seu sistema e concilia suas vendas apontando eventuais divergências. 
+									</p>
 									
+									<p>
+										Para ficar mais claro, vamos fazer uma <b>simulação</b>? 
+									</p>
+									
+									<p>
+										Vamos apresentar uma <b>série de vendas</b>, compare o <b>preço, a taxa da operadora e diga se o valor está certo ou divergente</b> do que deveria ser.
+									</p>
 
 								</p>
 							</div>
@@ -65,21 +84,30 @@
 				</div>
 
 				<div id="ContainerVendas" class="row">
-					<div class="col-md-4 offset-4">
+					<div class="col-md-4 offset-md-4 col-12">
 						<div id="vendaConcilia" class="card">
 							<h5 class="card-header">
 								<img class="card-img-top" src="images/produtos/iconfinder_Food_C207_2427857.png" alt="Card image cap">
 								<div class="tituloV"></div>
 							</h5>
-							<div class="card-body">
+							<div class="card-body" style="padding: 15px;">
 								<p class="card-text">
-									<div class="produto"></div>
-									<div class="valor"></div>
+									<h2 class="produto"></h2>
+									<h3 class="valor"></h3>
 									<div class="Adm"></div>
-									<div class="errVal"></div>
+									<div class="errVal" style="display: none;"></div>
 									<div class="taxa"></div>
-									<div class="Foto"></div>
+									<div class="Foto" style="display: none;"></div>
 								</p>
+
+								<p>
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
+										  <span class="sr-only"></span>
+										</div>
+									  </div>
+								</p>
+
 							</div>
 							<div class="card-footer">
 								<button type="button" class="btn btn-success btn-block" onclick="">Certo</button>
@@ -91,23 +119,23 @@
 
 
 				<div id="ContainerFim" class="row">
-					<div class="col-md-4 offset-4">
+					<div class="col-md-4 offset-md-4 col-12">
 						<div id="" class="card">
 							<h5 class="card-header">
 								<img class="card-img-top" src="images/produtos/iconfinder_Food_C207_2427857.png" alt="Card image cap">
 								<div class=""></div>
 							</h5>
-							<div class="card-body">
+							<div class="card-body"  style="padding: 15px;">
 								<p class="card-text">
 									
 								</p>
+
+								<img class="img-thumbnail" src="https://evencard.com.br/evenblog/wp-content/uploads/2020/07/tela-inicial-even-1-1024x576.jpg" />
+
 							</div>
 							<div class="card-footer">
 								
-								<!-- <button type="button" class="btn btn-primary form-control" 
-									onclick="ClickOn();$('#ContainerInicio').hide();$('#ContainerVendas').show();">
-									Reiniciar
-								</button> -->
+								<button type="button" class="btn btn-primary btn-block" onclick="location.reload();">repeir</button>
 								
 							</div>
 						</div>
@@ -128,6 +156,7 @@
 
 		//contador
 		var vendas = 0;
+		var counterBack;
 
 		// A $( document ).ready() block.
 		$(document).ready(function() {
@@ -135,7 +164,7 @@
 
 			for (let index = 0; index < 10; index++) {
 				VendaLista.push({
-					produto:"Produto " + Math.floor(Math.random() * 99999) + 1, 
+					produto:"PEDIDO: " + Math.floor(Math.random() * 99999) + 1, 
 					valor: Math.floor(Math.random() * (1000 - 100) + 100) / 100, 
 					Adm:"Cielo",
 					errVal: 0.80,
@@ -169,10 +198,15 @@
 				return;
 			}
 
+			timerroll();
+
 			//chance de erro
 			var cherr = Math.floor(Math.random() * 100) + 1;
 
 			console.log(cherr+"%");
+
+			$("#vendaConcilia .btn-success").removeClass('btnErrado');
+			$("#vendaConcilia .btn-danger").removeClass('btnErrado');
 
 			//calculos
 			if (cherr < 50) {
@@ -184,6 +218,8 @@
 
 				$("#vendaConcilia .btn-success").attr("onclick","ResultAction("+vendas+", true);ClickOn();");
 				$("#vendaConcilia .btn-danger").attr("onclick","ResultAction("+vendas+", false);ClickOn();");
+				$("#vendaConcilia .btn-danger").addClass('btnErrado');
+
 			}else{
 
 				console.log("erro");
@@ -193,19 +229,19 @@
 
 				$("#vendaConcilia .btn-success").attr("onclick","ResultAction("+vendas+", false);ClickOn();");
 				$("#vendaConcilia .btn-danger").attr("onclick","ResultAction("+vendas+", true);ClickOn();");
+				$("#vendaConcilia .btn-success").addClass('btnErrado');
 			}
 			//calculos
 
 			//tituloV
 			$("#vendaConcilia .produto").html(dados.produto);
-			$("#vendaConcilia .valor").html(dados.valor);
+			$("#vendaConcilia .valor").html(`R$ ${dados.valor};`);
 			$("#vendaConcilia .Adm").html(dados.Adm);
 			$("#vendaConcilia .errVal").html(dados.errVal);		
-			$("#vendaConcilia .Foto").html(dados.Foto);
-
 			$("#vendaConcilia .taxa").html(`taxa% ${dados.taxa}; Total a receber: ${total};`);
-
 			$("#vendaConcilia .tituloV").html(`${VendaLista.length}/${vendas};`);
+
+			$("#vendaConcilia .Foto").attr("src",dados.Foto);
 
 			//console.log(`VendaLista.length: ${VendaLista.length}; vendas: ${vendas}`);
 
@@ -239,6 +275,8 @@
 			let Terros = 0;
 			let Tacertos = 0;
 
+			let ValorErro = 0.0;
+
 			VendaLista.forEach(element => {
 				
 				console.log(element);
@@ -247,12 +285,53 @@
 					Tacertos++;
 				}else{
 					Terros++;
+
+					ValorErro += calculateSale(element.valor, element.taxa) - calculateSale(element.valor, (element.taxa + element.errVal));
 				}
 
 			});
 
-			$('#ContainerFim .card-text').html(`Acertos: ${Tacertos} ; Erros: ${Terros} ;`);
+			//$('#ContainerFim .card-text').html(`Acertos: ${Tacertos} ; Erros: ${Terros} ; <h2> R$: ${ValorErro} </h2>`);
+			
+			var ClassAlert = "alert-success";
 
+			if ((VendaLista.length / 3) < Terros) {
+				ClassAlert = "alert-danger";
+			}
+
+			$('#ContainerFim .card-text').html(`
+				<div class="alert ${ClassAlert}" role="alert">
+					<p>Você consolidou ${VendaLista.length} vendas.</p>
+					<p>${Terros} estavam com valores de taxas errados e você não percebeu! </p>
+
+					<p>A Evencard fica de olho nisso pra você, em cada venda, 24h, em todos os seus pdvs.</p>
+				</div>
+			`);
+
+
+		}
+
+		function timerroll() {
+
+			clearInterval(counterBack);
+
+			// Code goes here
+			var i = 100;
+
+			counterBack = setInterval(function(){
+				i--;
+
+				if (i > 0){
+					$('.progress-bar').css('width', i+'%');
+				} else {
+
+					$("#vendaConcilia .btnErrado").click();
+
+					clearInterval(counterBack);
+
+				}
+			
+			}, 100);
 		}
 
 	</script>
