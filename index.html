@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>SimuladorC</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+	<style>
+		#ContainerVendas, #ContainerFim{
+			display: none;
+		}
+
+		#vendaConcilia .card-img-top{
+			max-height: 50px;
+		}
+
+		.errTax{
+			border: 5px solid rgb(255 0 0 / 13%);
+		}
+
+		/* vendaConcilia tituloV float: right; */
+		#vendaConcilia .tituloV{
+			float: right;
+		}
+	</style>
+
+  </head>
+  <body>
+
+    <div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				
+				<div id="ContainerInicio" class="row">
+					<div class="col-md-4 offset-4">
+						<div id="" class="card">
+							<h5 class="card-header">
+								<img class="card-img-top" src="images/produtos/iconfinder_Food_C207_2427857.png" alt="Card image cap">
+								<div class="tituloV"></div>
+							</h5>
+							<div class="card-body">
+								<p class="card-text">
+									
+									
+
+								</p>
+							</div>
+							<div class="card-footer">
+								<button type="button" class="btn btn-primary btn-block" 
+									onclick="ClickOn();$('#ContainerInicio').hide();$('#ContainerVendas').show();">
+									Iniciar
+								</button>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="ContainerVendas" class="row">
+					<div class="col-md-4 offset-4">
+						<div id="vendaConcilia" class="card">
+							<h5 class="card-header">
+								<img class="card-img-top" src="images/produtos/iconfinder_Food_C207_2427857.png" alt="Card image cap">
+								<div class="tituloV"></div>
+							</h5>
+							<div class="card-body">
+								<p class="card-text">
+									<div class="produto"></div>
+									<div class="valor"></div>
+									<div class="Adm"></div>
+									<div class="errVal"></div>
+									<div class="taxa"></div>
+									<div class="Foto"></div>
+								</p>
+							</div>
+							<div class="card-footer">
+								<button type="button" class="btn btn-success btn-block" onclick="">Certo</button>
+								<button type="button" class="btn btn-danger btn-block" onclick="">Divergente</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div id="ContainerFim" class="row">
+					<div class="col-md-4 offset-4">
+						<div id="" class="card">
+							<h5 class="card-header">
+								<img class="card-img-top" src="images/produtos/iconfinder_Food_C207_2427857.png" alt="Card image cap">
+								<div class=""></div>
+							</h5>
+							<div class="card-body">
+								<p class="card-text">
+									
+								</p>
+							</div>
+							<div class="card-footer">
+								
+								<!-- <button type="button" class="btn btn-primary form-control" 
+									onclick="ClickOn();$('#ContainerInicio').hide();$('#ContainerVendas').show();">
+									Reiniciar
+								</button> -->
+								
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+
+			</div>
+		</div>
+	</div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+
+	<script>
+
+		//contador
+		var vendas = 0;
+
+		// A $( document ).ready() block.
+		$(document).ready(function() {
+			console.log( "ready!" );
+
+			for (let index = 0; index < 10; index++) {
+				VendaLista.push({
+					produto:"Produto " + Math.floor(Math.random() * 99999) + 1, 
+					valor: Math.floor(Math.random() * (1000 - 100) + 100) / 100, 
+					Adm:"Cielo",
+					errVal: 0.80,
+					taxa: Math.floor(Math.random() * 9) + 1,
+					Foto: "images/produtos/iconfinder_Food_C207_2427857.png",
+					Result:{
+						certo: false,
+						roll: false
+					}
+				});
+			}
+
+			console.log(VendaLista);
+
+		});
+
+		//
+		var VendaLista = [];
+
+		function ClickOn() {
+			dados = VendaLista[vendas];
+			Vendendo(dados);
+		}
+
+		function Vendendo(dados) {
+			
+			if ((vendas) == VendaLista.length) {
+				$('#ContainerVendas').hide();
+				$('#ContainerFim').show();
+				Finaliza();
+				return;
+			}
+
+			//chance de erro
+			var cherr = Math.floor(Math.random() * 100) + 1;
+
+			console.log(cherr+"%");
+
+			//calculos
+			if (cherr < 50) {
+
+				console.log("certo");
+
+				$("#vendaConcilia").removeClass('errTax');
+				var total = calculateSale(dados.valor, dados.taxa);
+
+				$("#vendaConcilia .btn-success").attr("onclick","ResultAction("+vendas+", true);ClickOn();");
+				$("#vendaConcilia .btn-danger").attr("onclick","ResultAction("+vendas+", false);ClickOn();");
+			}else{
+
+				console.log("erro");
+
+				$("#vendaConcilia").addClass('errTax');
+				var total = calculateSale(dados.valor, (dados.taxa + dados.errVal));
+
+				$("#vendaConcilia .btn-success").attr("onclick","ResultAction("+vendas+", false);ClickOn();");
+				$("#vendaConcilia .btn-danger").attr("onclick","ResultAction("+vendas+", true);ClickOn();");
+			}
+			//calculos
+
+			//tituloV
+			$("#vendaConcilia .produto").html(dados.produto);
+			$("#vendaConcilia .valor").html(dados.valor);
+			$("#vendaConcilia .Adm").html(dados.Adm);
+			$("#vendaConcilia .errVal").html(dados.errVal);		
+			$("#vendaConcilia .Foto").html(dados.Foto);
+
+			$("#vendaConcilia .taxa").html(`taxa% ${dados.taxa}; Total a receber: ${total};`);
+
+			$("#vendaConcilia .tituloV").html(`${VendaLista.length}/${vendas};`);
+
+			//console.log(`VendaLista.length: ${VendaLista.length}; vendas: ${vendas}`);
+
+			if (VendaLista.length >= vendas) {
+				vendas++;
+
+				console.log(`VendaLista.length: ${VendaLista.length}; vendas: ${vendas-1}`);
+
+				if ((vendas-1) == VendaLista.length) {
+					$('#ContainerVendas').hide();
+					$('#ContainerFim').show();
+					Finaliza();
+				}
+			}
+		}
+
+		function calculateSale(listPrice, discount)
+		{
+			listPrice = parseFloat(listPrice);
+			discount  = parseFloat(discount);
+
+			return (listPrice - ( listPrice * discount / 100 )).toFixed(2); // Sale price
+		}
+
+		function ResultAction(index, opt) {
+			VendaLista[index].Result.certo = opt;
+		}
+
+		function Finaliza() {
+			
+			let Terros = 0;
+			let Tacertos = 0;
+
+			VendaLista.forEach(element => {
+				
+				console.log(element);
+
+				if (element.Result.certo == true) {
+					Tacertos++;
+				}else{
+					Terros++;
+				}
+
+			});
+
+			$('#ContainerFim .card-text').html(`Acertos: ${Tacertos} ; Erros: ${Terros} ;`);
+
+		}
+
+	</script>
+
+  </body>
+</html>
